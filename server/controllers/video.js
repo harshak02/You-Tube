@@ -52,7 +52,7 @@ export const deleteVideo = async (req, res, next) => {
         }
 
         if (req.user.id !== video.userId) {
-            return next(createError(403, "You cant update other videos!"));
+            return next(createError(403, "You cant delete other videos!"));
         }
 
         const deletedVideo = await Video.findByIdAndDelete(req.params.id);
@@ -109,7 +109,7 @@ export const addView = async (req, res, next) => {
 
 export const random = async (req, res, next) => {
     try {
-        const videos = await Video.aggregate([{ $sample: { size: 1 } }]);//fetches 40 random videos
+        const videos = await Video.aggregate([{ $sample: { size : 3 } }]);//fetches that no. random videos
 
         res.status(200).json({
             success: true,
@@ -181,8 +181,7 @@ export const getByTag = async (req, res, next) => {
 
 export const search = async (req, res, next) => {
 
-    const query = req.query.tags.split(",");
-
+    const query = req.query.q;
     try {
         const videos = await Video.find({ title: { $regex: query, $options: "i" } }).limit(40);//finds the videos with atleast one user req tags in the videos
         res.status(200).json({

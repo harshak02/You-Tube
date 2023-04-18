@@ -74,10 +74,11 @@ export const unsubscribe = async (req,res,next) => {
         await User.findByIdAndUpdate(req.user.id,{
             $pull: {subscribedUsers : req.params.id}
         });
-        await User.findByIdAndUpdate(req.params.id,{
-            $inc : { subscribers : -1},
-        });
-
+        const user = await User.findById(req.params.id);
+        if (user.subscribers >= 1) {
+          user.subscribers -= 1;
+          await user.save();
+        }
         res.status(200).json("Subscription Cancelled");
     } catch (err) {
         next(err);

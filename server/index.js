@@ -20,6 +20,10 @@ const connect = async () =>{
 
 app.use(express.json())//allows the system to take up the json externally
 app.use(cookieParser())//for creating cookies
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+});
 
 app.use("/api/auth",authRoutes);
 app.use("/api/users",userRoutes);
