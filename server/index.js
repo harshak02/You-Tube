@@ -33,7 +33,7 @@ app.use("/api/comments",commentRoutes);
 //middle ware to handle errors
 app.use((err,req,res,next)=> {
     const status = err.status || 500;
-    const message = err.message || "Something went wrong!";
+    const message = err.message || "Something went wrong we will be back soon!";
     return res.status(status).json({
         success : false,
         status,
