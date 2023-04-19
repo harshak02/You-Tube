@@ -6,6 +6,7 @@ import videoRoutes from "./routes/videos.js";
 import commentRoutes from "./routes/comments.js";  
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 dotenv.config();
@@ -20,10 +21,16 @@ const connect = async () =>{
 
 app.use(express.json())//allows the system to take up the json externally
 app.use(cookieParser())//for creating cookies
+
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'Content-Type');
     next();
 });
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    allowedHeaders: ['Content-Type']
+}));
 
 app.use("/api/auth",authRoutes);
 app.use("/api/users",userRoutes);
