@@ -149,14 +149,14 @@ export const sub = async (req, res, next) => {
         //finds out all videos of the user subscribed channels
         const list = await Promise.all(
             subscribedChannels.map(channelId => {
-                return Video.find({ userId: channelId });
+                return Video.find({ userId: channelId });//all videos of a userId
             })
         );
 
         res.status(200).json({
             success: true,
             message: "Videos are fetched!",
-            list: list.flat().sort((a, b) => b.createdAt - a.createdAt) // gives the recent videos uploaded by subs of user
+            videos : list.flat().sort((a, b) => b.createdAt - a.createdAt) // gives the recent videos uploaded by subs of user
         });
 
     } catch (err) {
